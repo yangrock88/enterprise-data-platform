@@ -1,0 +1,8 @@
+duckdb>=1.0
+pandas>=2.2
+numpy>=1.26
+pyyaml>=6.0
+prefect>=3.0
+streamlit>=1.36
+plotly>=5.22
+pytest>=8.0

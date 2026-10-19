@@ -1,0 +1,40 @@
+# Synthetic B2B SaaS company definition ("Nimbus Analytics" -- fictional).
+# Seeded generator -> reproducible source systems for the ELT demo.
+
+company:
+  name: "Nimbus Analytics (synthetic)"
+  seed: 2024
+  months_of_history: 36          # 3 fiscal years of monthly grain
+
+# customer portfolio shape
+accounts:
+  starting_customers: 340
+  segments:
+    SMB:        {weight: 0.55, arr_floor: 6_000,  arr_ceiling: 30_000}
+    Mid-Market: {weight: 0.32, arr_floor: 30_000, arr_ceiling: 150_000}
+    Enterprise: {weight: 0.13, arr_floor: 150_000, arr_ceiling: 900_000}
+  industries: [Technology, Healthcare, Financial Services, Retail, Manufacturing]
+  regions: [NA-East, NA-West, NA-Central, EMEA, APAC]
+
+# revenue motion (monthly, per segment) -- realistic SaaS dynamics
+revenue_motion:
+  new_logos_per_month: {start: 9, growth: 0.03}     # 3% m/m growth in new logos
+  gross_churn_rate:    {SMB: 0.022, Mid-Market: 0.013, Enterprise: 0.007}
+  expansion_rate:      {SMB: 0.030, Mid-Market: 0.045, Enterprise: 0.060}
+  contraction_rate:    {SMB: 0.040, Mid-Market: 0.030, Enterprise: 0.018}
+  expansion_size_pct:  [0.05, 0.30]                  # expansion as share of ARR
+  contraction_size_pct: [0.05, 0.25]
+
+# go-to-market economics
+sales:
+  pipeline_per_new_logo: 4.5        # opps created per closed-won
+  win_rate: {SMB: 0.28, Mid-Market: 0.24, Enterprise: 0.18}
+  sales_cycle_days: {SMB: 35, Mid-Market: 85, Enterprise: 190}
+  marketing_spend_per_month: {start: 210_000, growth: 0.025}
+  sales_headcount_cost_per_month: {start: 160_000, growth: 0.020}
+
+# product telemetry shape
+product:
+  dau_mau_ratio: [0.18, 0.55]       # per account, varies by health
+  seats_utilization: [0.45, 0.95]
+  features: [dashboards, alerts, api_access, exports, ml_forecasts]

@@ -1,0 +1,31 @@
+# Access governance for the Nimbus warehouse.
+#
+# DuckDB doesn't enforce server-side RBAC, so governance here is implemented
+# as *contracted views*: consumers query gold views, never raw tables, and the
+# test suite asserts the views cannot leak what the matrix forbids. The matrix
+# below is the human-readable contract the views implement.
+
+roles:
+  exec:
+    description: "Company leadership; full gold schema"
+    can_see: [gold.arr_bridge_monthly, gold.retention_cohorts,
+              gold.unit_economics_monthly, gold.account_health]
+    pii: masked
+
+  sales_ops:
+    description: "Revenue operations; account detail, owner emails visible"
+    can_see: [gold.account_health, gold.pipeline_funnel]
+    pii: visible
+
+  product_analytics:
+    description: "Product team; usage telemetry, no sales-owner identity"
+    can_see: [gold.feature_adoption, gold.account_health]
+    pii: masked
+
+policies:
+  - column: dim_account.owner_email
+    classification: pii
+    masked_as: "rep***@nimbus.example (domain kept, local part hashed)"
+  - table: raw.crm_accounts
+    classification: internal_restricted
+    note: "gold views only; raw is pipeline-internal"
